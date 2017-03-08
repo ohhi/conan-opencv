@@ -1,25 +1,12 @@
 from conans import ConanFile, CMake
 import os, fnmatch
 
-# Function to recursively match a pattern through a directory hieracy
-def rfnmatch(dirname, pattern):
-    matches = []
-    for root, dirnames, filenames in os.walk(dirname):
-        for filename in fnmatch.filter(filenames, pattern):
-            matches.append(os.path.join(root, filename))
-    return matches
-# Strip the lib name from a filename
-def libname(filename):
-    return os.path.splitext(os.path.basename(filename))[0]
-
 class OpenCVConan(ConanFile):
-    description = "OpenCV: Open Source Computer Vision Library. This is meant"
-        + " to be a cross-platform package for the OpenCV library that builds"
-        + " the same regardless the implicit dependencies of OpenCV. The "
-        + " missing features might be added to this package at some point "
-        + " through explicit Conan package dependencies."
+    # Description must be very short for conan.io
+    description = "OpenCV: Open Source Computer Vision Library."
     name = "OpenCV"
     version = "3.2.0"
+    opencv_version_suffix = "320"
     settings = "os", "compiler", "build_type", "arch"
     options = {
         "shared": [True, False]
@@ -38,37 +25,114 @@ class OpenCVConan(ConanFile):
     def build(self):
         cmake = CMake(self.settings)
         cmake_options = {
+            "CMAKE_INSTALL_PREFIX": "install",
+            "WITH_OPENXL": False,
             "WITH_IPP": True,
             "WITH_QT": False,
+            "WITH_GTK": False,
             "WITH_OPENGL": False,
             "WITH_CUDA": False,
+            "WITH_JPEG": True,
+            "BUILD_JPEG": True,
+            "WITH_PNG": True,
+            "BUILD_PNG": True,
+            "WITH_JASPER": True,
+            "BUILD_JASPER": True,
+            "WITH_ZLIB": True,
+            "BUILD_ZLIB": True,
+            "WITH_TIFF": True,
+            "BUILD_TIFF": True,
+            "WITH_TBB": False,
+            "BUILD_TBB": False,
+            "WITH_OPENEXR": True,
+            "BUILD_OPENEXR": True,
+            "WITH_WEBP": True,
+            "BUILD_WEBP": True,
             "BUILD_SHARED_LIBS": self.options.shared,
-            "BUILD_WITH_STATIC_CRT": self.settings.compiler.runtime in ["MT","MTd"],
             "BUILD_TESTS": False,
             "BUILD_PERF_TESTS": False,
             "BUILD_opencv_apps": False,
-            "CPACK_BINARY_NSIS": False
+            "CPACK_BINARY_NSIS": False,
+            "BUILD_opencv_calib3d": True,
+            "BUILD_opencv_features2d": True,
+            "BUILD_opencv_flann": True,
+            "BUILD_opencv_highgui": True,
+            "BUILD_opencv_imgcodecs": True,
+            "BUILD_opencv_imgproc": True,
+            "BUILD_opencv_ml": True,
+            "BUILD_opencv_objectdetect": True,
+            "BUILD_opencv_photo": True,
+            "BUILD_opencv_shape": True,
+            "BUILD_opencv_stitching": True,
+            "BUILD_opencv_superres": True,
+            "BUILD_opencv_ts": True,
+            "BUILD_opencv_video": True,
+            "BUILD_opencv_videoio": True,
+            "BUILD_opencv_videostab": True
         }
+
+        if self.settings.compiler == "Visual Studio":
+            cmake_options["BUILD_WITH_STATIC_CRT"] = self.settings.compiler.runtime in ["MT","MTd"]
         cmake.configure(self, defs=cmake_options, source_dir="opencv")
         cmake.build(self, target="install")
 
     def package(self):
-            self.copy(pattern="*.h*", dst="include", src =os.path.join("install", "include"), keep_path=True)
+        self.copy(pattern="*.h*", dst="include", src =os.path.join("install", "include"), keep_path=True)
 
-            self.copy(pattern="*.lib", dst="lib", src="3rdparty", keep_path=False)
-            self.copy(pattern="*.lib", dst="lib", src="lib", keep_path=False)
+        if self.settings.os == "Windows":
+            self.copy(pattern="*.lib", dst="lib", src="3rdparty\\lib", keep_path=False)
+            self.copy(pattern="*.lib", dst="lib", src="3rdparty\\ippicv\\ippicv_win\\lib\\intel64", keep_path=False)
+            self.copy(pattern="*.lib", dst="lib", src="install", keep_path=False)
             self.copy(pattern="*.dll", dst="bin", src="bin", keep_path=False)
             self.copy(pattern="*.exe", dst="bin", src="bin", keep_path=False)
 
-            self.copy(pattern="*.dylib", dst="lib", src="bin", keep_path=False)
-            self.copy(pattern="*.so*", dst="lib", src="bin", keep_path=False)
-            self.copy(pattern="*.a", dst="lib", src="lib", keep_path=False)
-            self.copy(pattern="*.a", dst="lib", src="lib", keep_path=False)
+        if self.settings.os == "Linux":
+            self.copy(pattern="*.a", dst="lib", src="3rdparty/lib", keep_path=False)
+            self.copy(pattern="*.a", dst="lib", src="3rdparty/ippicv/ippicv_lnx/lib/intel64", keep_path=False)
+            self.copy(pattern="*.a", dst="lib", src="install", keep_path=False)
+            self.copy(pattern="*.so*", dst="lib", src="install", keep_path=False)
 
     def package_info(self):
-        if self.settings.os == "Windows":
-            self.cpp_info.libs.extend(map(libname, rfnmatch("lib", "*.lib")))
-            self.cpp_info.libs.extend(map(libname, rfnmatch("3rdparty", "*.lib")))
-        else:
-            self.cpp_info.libs.extend(map(libname, rfnmatch("lib", "*.so*")))
-            self.cpp_info.libs.extend(map(libname, rfnmatch("3rdparty", "*.so*")))
+        libs_opencv = [
+            "opencv_core",
+            "opencv_calib3d",
+            "opencv_flann",
+            "opencv_highgui",
+            "opencv_imgcodecs",
+            "opencv_imgproc",
+            "opencv_ml",
+            "opencv_objdetect",
+            "opencv_photo",
+            "opencv_shape",
+            "opencv_stitching",
+            "opencv_superres",
+            "opencv_video",
+            "opencv_videoio",
+            "opencv_videostab"
+        ]
+        libs_3rdparty = [
+            "zlib",
+            "libjpeg",
+            "libpng",
+            "libjasper",
+            "libtiff",
+            "libwebp",
+            "IlmImf"
+        ]
+        libs_win = [
+            "ippicvmt"
+        ]
+        libs_linux = [
+            "ippicv",
+            "pthread",
+            "dl"
+        ]
+        if self.settings.compiler == "Visual Studio":
+            debug_suffix = ("d" if self.settings.build_type=="Debug" else "")
+            libs_opencv_win = map(lambda n: n + self.opencv_version_suffix + debug_suffix, libs_opencv)
+            libs_3rdparty_win = map(lambda n: n + debug_suffix, libs_3rdparty)
+            libs = libs_opencv_win + libs_3rdparty_win + libs_win
+            self.cpp_info.libs.extend(libs)
+        elif self.settings.compiler == "gcc":
+            libs = libs_opencv + libs_3rdparty + libs_linux
+            self.cpp_info.libs.extend(libs)

@@ -1,2 +1,2 @@
 # conan-opencv
-OpenCV: Open Source Computer Vision Library. This is meant to be a cross-platform package for the OpenCV library that builds the same regardless the implicit dependencies of OpenCV. The missing features might be added to this package at some point through explicit Conan package dependencies.
+OpenCV: Open Source Computer Vision Library. This is meant to be a cross-platform package for the OpenCV library that builds the same regardless of which of the implicit dependencies of OpenCV one might have in his system. The missing features might be added to this package at some point through explicit Conan package dependencies. The package also tries to support all the meaningful linkage settings.
