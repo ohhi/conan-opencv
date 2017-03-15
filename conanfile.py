@@ -94,7 +94,6 @@ class OpenCVConan(ConanFile):
 
     def package_info(self):
         libs_opencv = [
-            "opencv_core",
             "opencv_calib3d",
             "opencv_flann",
             "opencv_highgui",
@@ -108,7 +107,8 @@ class OpenCVConan(ConanFile):
             "opencv_superres",
             "opencv_video",
             "opencv_videoio",
-            "opencv_videostab"
+            "opencv_videostab",
+            "opencv_core" # GCC wants this last
         ]
         libs_3rdparty = [
             "zlib",
@@ -125,7 +125,7 @@ class OpenCVConan(ConanFile):
         libs_linux = [
             "ippicv",
             "pthread",
-            "dl"
+            "dl" # GCC wants this last
         ]
         if self.settings.compiler == "Visual Studio":
             debug_suffix = ("d" if self.settings.build_type=="Debug" else "")
