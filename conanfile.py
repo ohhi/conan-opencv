@@ -16,7 +16,6 @@ class OpenCVConan(ConanFile):
     license = "http://http://opencv.org/license.html"
     generators = "cmake"
     short_paths = True
-    build_policy = "missing"
 
     def source(self):
         self.run("git clone https://github.com/opencv/opencv.git")
