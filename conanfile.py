@@ -8,21 +8,25 @@ class OpenCVConan(ConanFile):
     version = "3.2.0"
     opencv_version_suffix = "320"
     settings = "os", "compiler", "build_type", "arch"
+    requires = "libjpeg-turbo/1.5.1@lasote/stable"
     options = {
         "shared": [True, False]
     }
     default_options = "shared=False"
     url = "https://github.com/ohhi/conan-opencv"
     license = "http://http://opencv.org/license.html"
-    generators = "cmake"
+    generators = "cmake", "txt"
     short_paths = True
-
+    
     def source(self):
         self.run("git clone https://github.com/opencv/opencv.git")
         self.run("cd opencv && git checkout tags/3.2.0")
 
+    def imports(self):
+        self.copy("*", dst="jpeg-turbo", src="")
+        
     def build(self):
-        cmake = CMake(self.settings)
+        cmake = CMake(self)
         cmake_options = {
             "CMAKE_INSTALL_PREFIX": "install",
             "WITH_OPENXL": False,
@@ -32,7 +36,9 @@ class OpenCVConan(ConanFile):
             "WITH_OPENGL": False,
             "WITH_CUDA": False,
             "WITH_JPEG": True,
-            "BUILD_JPEG": True,
+            "JPEG_INCLUDE_DIR": "jpeg-turbo/include",
+            "JPEG_LIBRARY": "jpeg-turbo/lib/jpeg-static.lib",
+            "BUILD_JPEG": False,
             "WITH_PNG": True,
             "BUILD_PNG": True,
             "WITH_JASPER": True,
@@ -72,8 +78,8 @@ class OpenCVConan(ConanFile):
 
         if self.settings.compiler == "Visual Studio":
             cmake_options["BUILD_WITH_STATIC_CRT"] = self.settings.compiler.runtime in ["MT","MTd"]
-        cmake.configure(self, defs=cmake_options, source_dir="opencv")
-        cmake.build(self, target="install")
+        cmake.configure(defs=cmake_options, source_dir="opencv")
+        cmake.build(target="install")
 
     def package(self):
         self.copy(pattern="*.h*", dst="include", src =os.path.join("install", "include"), keep_path=True)
@@ -111,7 +117,6 @@ class OpenCVConan(ConanFile):
         ]
         libs_3rdparty = [
             "zlib",
-            "libjpeg",
             "libpng",
             "libjasper",
             "libtiff",

@@ -10,8 +10,8 @@ class MyTestConan(ConanFile):
           self.copy("*.dll", dst="bin", src="bin")
 
     def build(self):
-        cmake = CMake(self.settings)
-        cmake.configure(self, source_dir=self.conanfile_directory, build_dir=".")
-        cmake.build(self, build_dir=".")
+        cmake = CMake(self)
+        cmake.configure(source_dir=self.conanfile_directory, build_dir=".")
+        cmake.build(build_dir=".")
     def test(self):
         self.run(os.path.join(".","bin", "mytest"))
