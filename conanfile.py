@@ -73,7 +73,8 @@ class OpenCVConan(ConanFile):
             "BUILD_opencv_ts": True,
             "BUILD_opencv_video": True,
             "BUILD_opencv_videoio": True,
-            "BUILD_opencv_videostab": True
+            "BUILD_opencv_videostab": True,
+            "BUILD_opencv_python3": False
         }
 
         if self.settings.compiler == "Visual Studio":
