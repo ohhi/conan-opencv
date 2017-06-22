@@ -17,14 +17,14 @@ class OpenCVConan(ConanFile):
     license = "http://http://opencv.org/license.html"
     generators = "cmake", "txt"
     short_paths = True
-    
+
     def source(self):
         self.run("git clone https://github.com/opencv/opencv.git")
         self.run("cd opencv && git checkout tags/3.2.0")
 
     def imports(self):
         self.copy("*", dst="jpeg-turbo", src="")
-        
+
     def build(self):
         cmake = CMake(self)
         cmake_options = {
@@ -36,8 +36,8 @@ class OpenCVConan(ConanFile):
             "WITH_OPENGL": False,
             "WITH_CUDA": False,
             "WITH_JPEG": True,
-            "JPEG_INCLUDE_DIR": "jpeg-turbo/include",
-            "JPEG_LIBRARY": "jpeg-turbo/lib/jpeg-static.lib",
+            "JPEG_INCLUDE_DIR": self.deps_cpp_info.includedirs[0],
+            "JPEG_LIBRARY": "to be inserted bellow",
             "BUILD_JPEG": False,
             "WITH_PNG": True,
             "BUILD_PNG": True,
@@ -74,11 +74,16 @@ class OpenCVConan(ConanFile):
             "BUILD_opencv_video": True,
             "BUILD_opencv_videoio": True,
             "BUILD_opencv_videostab": True,
+            "BUILD_opencv_java": False,
             "BUILD_opencv_python3": False
         }
 
         if self.settings.compiler == "Visual Studio":
             cmake_options["BUILD_WITH_STATIC_CRT"] = self.settings.compiler.runtime in ["MT","MTd"]
+            cmake_options["JPEG_LIBRARY"] = self.deps_cpp_info.libdirs[0] + "/jpeg-static.lib"
+        elif self.settings.os == "Linux":
+            cmake_options["WITH_GTK"] = True
+            cmake_options["JPEG_LIBRARY"] = self.deps_cpp_info.libdirs[0] + "/libjpeg.a"
         cmake.configure(defs=cmake_options, source_dir="opencv")
         cmake.build(target="install")
 
@@ -117,17 +122,32 @@ class OpenCVConan(ConanFile):
             "opencv_core" # GCC wants this last
         ]
         libs_3rdparty = [
-            "zlib",
             "libpng",
             "libjasper",
             "libtiff",
             "libwebp",
-            "IlmImf"
+            "IlmImf",
+            "zlib" # GCC wants this last
         ]
         libs_win = [
             "ippicvmt"
         ]
         libs_linux = [
+            # GTK Stuff >>
+            "gtk-x11-2.0",
+            "gdk-x11-2.0",
+            "pangocairo-1.0",
+            "atk-1.0",
+            "cairo",
+            "gdk_pixbuf-2.0",
+            "gio-2.0",
+            "pangoft2-1.0",
+            "pango-1.0",
+            "gobject-2.0",
+            "glib-2.0",
+            "fontconfig",
+            "freetype",
+            # GTK Stuff <<
             "ippicv",
             "pthread",
             "dl" # GCC wants this last
