@@ -82,7 +82,7 @@ class OpenCVConan(ConanFile):
             cmake_options["BUILD_WITH_STATIC_CRT"] = self.settings.compiler.runtime in ["MT","MTd"]
             cmake_options["JPEG_LIBRARY"] = self.deps_cpp_info.libdirs[0] + "/jpeg-static.lib"
         elif self.settings.os == "Linux":
-            cmake_options["WITH_GTK"] = True
+            #cmake_options["WITH_GTK"] = True
             cmake_options["JPEG_LIBRARY"] = self.deps_cpp_info.libdirs[0] + "/libjpeg.a"
         cmake.configure(defs=cmake_options, source_dir="opencv")
         cmake.build(target="install")
@@ -134,19 +134,19 @@ class OpenCVConan(ConanFile):
         ]
         libs_linux = [
             # GTK Stuff >>
-            "gtk-x11-2.0",
-            "gdk-x11-2.0",
-            "pangocairo-1.0",
-            "atk-1.0",
-            "cairo",
-            "gdk_pixbuf-2.0",
-            "gio-2.0",
-            "pangoft2-1.0",
-            "pango-1.0",
-            "gobject-2.0",
-            "glib-2.0",
-            "fontconfig",
-            "freetype",
+            #"gtk-x11-2.0",
+            #"gdk-x11-2.0",
+            #"pangocairo-1.0",
+            #"atk-1.0",
+            #"cairo",
+            #"gdk_pixbuf-2.0",
+            #"gio-2.0",
+            #"pangoft2-1.0",
+            #"pango-1.0",
+            #"gobject-2.0",
+            #"glib-2.0",
+            #"fontconfig",
+            #"freetype",
             # GTK Stuff <<
             "ippicv",
             "pthread",
