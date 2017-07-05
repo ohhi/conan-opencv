@@ -5,7 +5,7 @@ class OpenCVConan(ConanFile):
     # Description must be very short for conan.io
     description = "OpenCV: Open Source Computer Vision Library."
     name = "OpenCV"
-    version = "3.2.0-1"
+    version = "3.2.0-2"
     opencv_version_suffix = "320"
     settings = "os", "compiler", "build_type", "arch"
     requires = "libjpeg-turbo/1.5.1@lasote/stable"
@@ -154,8 +154,8 @@ class OpenCVConan(ConanFile):
         ]
         if self.settings.compiler == "Visual Studio":
             debug_suffix = ("d" if self.settings.build_type=="Debug" else "")
-            libs_opencv_win = map(lambda n: n + self.opencv_version_suffix + debug_suffix, libs_opencv)
-            libs_3rdparty_win = map(lambda n: n + debug_suffix, libs_3rdparty)
+            libs_opencv_win = [n + self.opencv_version_suffix + debug_suffix for n in libs_opencv]
+            libs_3rdparty_win =[n + debug_suffix for n in libs_3rdparty]
             libs = libs_opencv_win + libs_3rdparty_win + libs_win
             self.cpp_info.libs.extend(libs)
         elif self.settings.compiler == "gcc":
