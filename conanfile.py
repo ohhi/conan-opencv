@@ -10,9 +10,10 @@ class OpenCVConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     requires = "libjpeg-turbo/1.5.1@lasote/stable"
     options = {
-        "shared": [True, False]
+        "shared": [True, False],
+        "host_gtk": [True, False]
     }
-    default_options = "shared=False"
+    default_options = "shared=False", "host_gtk=False"
     url = "https://github.com/ohhi/conan-opencv"
     license = "http://http://opencv.org/license.html"
     generators = "cmake", "txt"
@@ -32,7 +33,7 @@ class OpenCVConan(ConanFile):
             "WITH_OPENXL": False,
             "WITH_IPP": True,
             "WITH_QT": False,
-            "WITH_GTK": False,
+            "WITH_GTK": self.options.host_gtk,
             "WITH_OPENGL": False,
             "WITH_CUDA": False,
             "WITH_JPEG": True,
@@ -130,7 +131,6 @@ class OpenCVConan(ConanFile):
             "opencv_core" # GCC wants this last
         ]
         libs_3rdparty = [
-            "ipp_iw",
             "ittnotify",
             "libprotobuf",
             "libpng",
@@ -141,24 +141,26 @@ class OpenCVConan(ConanFile):
             "zlib" # GCC wants this last
         ]
         libs_win = [
+            "ipp_iw",
             "ippicvmt"
         ]
+        libs_linux_gtk = [
+            "gtk-x11-2.0",
+            "gdk-x11-2.0",
+            "pangocairo-1.0",
+            "atk-1.0",
+            "cairo",
+            "gdk_pixbuf-2.0",
+            "gio-2.0",
+            "pangoft2-1.0",
+            "pango-1.0",
+            "gobject-2.0",
+            "glib-2.0",
+            "fontconfig",
+            "freetype"
+        ],
         libs_linux = [
-            # GTK Stuff >>
-            #"gtk-x11-2.0",
-            #"gdk-x11-2.0",
-            #"pangocairo-1.0",
-            #"atk-1.0",
-            #"cairo",
-            #"gdk_pixbuf-2.0",
-            #"gio-2.0",
-            #"pangoft2-1.0",
-            #"pango-1.0",
-            #"gobject-2.0",
-            #"glib-2.0",
-            #"fontconfig",
-            #"freetype",
-            # GTK Stuff <<
+            "ipp_iw",
             "ippicv",
             "pthread",
             "dl" # GCC wants this last
@@ -170,5 +172,8 @@ class OpenCVConan(ConanFile):
             libs = libs_opencv_win + libs_3rdparty_win + libs_win
             self.cpp_info.libs.extend(libs)
         elif self.settings.compiler == "gcc":
-            libs = libs_opencv + libs_3rdparty + libs_linux
+            libs = libs_opencv + libs_3rdparty
+            if self.options.host_gtk:
+                libs = libs + libs_linux_gtk
+            libs = libs + libs_linux
             self.cpp_info.libs.extend(libs)
