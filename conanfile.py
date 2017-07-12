@@ -130,6 +130,7 @@ class OpenCVConan(ConanFile):
             "opencv_core" # GCC wants this last
         ]
         libs_3rdparty = [
+            "ipp_iw",
             "ittnotify",
             "libprotobuf",
             "libpng",
@@ -140,8 +141,7 @@ class OpenCVConan(ConanFile):
             "zlib" # GCC wants this last
         ]
         libs_win = [
-            "ippicvmt",
-            "ipp_iw"
+            "ippicvmt"
         ]
         libs_linux = [
             # GTK Stuff >>
