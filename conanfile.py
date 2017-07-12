@@ -92,14 +92,20 @@ class OpenCVConan(ConanFile):
 
         if self.settings.os == "Windows":
             self.copy(pattern="*.lib", dst="lib", src="3rdparty\\lib", keep_path=False)
+            self.copy(pattern="*.pdb", dst="lib", src="3rdparty\\lib", keep_path=False)
             self.copy(pattern="*.lib", dst="lib", src="3rdparty\\ippicv\\ippicv_win\\lib\\intel64", keep_path=False)
+            self.copy(pattern="*.pdb", dst="lib", src="3rdparty\\ippicv\\ippicv_win\\lib\\intel64", keep_path=False)
+            self.copy(pattern="*.lib", dst="lib", src="3rdparty\\ippicv\\ippiw_win\\lib\\intel64", keep_path=False)
+            self.copy(pattern="*.pdb", dst="lib", src="3rdparty\\ippicv\\ippiw_win\\lib\\intel64", keep_path=False)
             self.copy(pattern="*.lib", dst="lib", src="install", keep_path=False)
+            self.copy(pattern="*.pdb", dst="lib", src="install", keep_path=False)
             self.copy(pattern="*.dll", dst="bin", src="bin", keep_path=False)
             self.copy(pattern="*.exe", dst="bin", src="bin", keep_path=False)
 
         if self.settings.os == "Linux":
             self.copy(pattern="*.a", dst="lib", src="3rdparty/lib", keep_path=False)
             self.copy(pattern="*.a", dst="lib", src="3rdparty/ippicv/ippicv_lnx/lib/intel64", keep_path=False)
+            self.copy(pattern="*.a", dst="lib", src="3rdparty/ippicv/ippiw_lnx/lib/intel64", keep_path=False)
             self.copy(pattern="*.a", dst="lib", src="install", keep_path=False)
             self.copy(pattern="*.so*", dst="lib", src="install", keep_path=False)
 
