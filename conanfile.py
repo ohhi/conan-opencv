@@ -5,8 +5,8 @@ class OpenCVConan(ConanFile):
     # Description must be very short for conan.io
     description = "OpenCV: Open Source Computer Vision Library."
     name = "OpenCV"
-    version = "3.2.0-2"
-    opencv_version_suffix = "320"
+    version = "3.3.0-rc-1"
+    opencv_version_suffix = "330"
     settings = "os", "compiler", "build_type", "arch"
     requires = "libjpeg-turbo/1.5.1@lasote/stable"
     options = {
@@ -20,7 +20,7 @@ class OpenCVConan(ConanFile):
 
     def source(self):
         self.run("git clone https://github.com/opencv/opencv.git")
-        self.run("cd opencv && git checkout tags/3.2.0")
+        self.run("cd opencv && git checkout tags/3.3.0-rc")
 
     def imports(self):
         self.copy("*", dst="jpeg-turbo", src="")
@@ -106,6 +106,8 @@ class OpenCVConan(ConanFile):
     def package_info(self):
         libs_opencv = [
             "opencv_calib3d",
+            "opencv_dnn",
+            "opencv_features2d",
             "opencv_flann",
             "opencv_highgui",
             "opencv_imgcodecs",
@@ -122,6 +124,8 @@ class OpenCVConan(ConanFile):
             "opencv_core" # GCC wants this last
         ]
         libs_3rdparty = [
+            "ittnotify",
+            "libprotobuf",
             "libpng",
             "libjasper",
             "libtiff",
@@ -130,7 +134,8 @@ class OpenCVConan(ConanFile):
             "zlib" # GCC wants this last
         ]
         libs_win = [
-            "ippicvmt"
+            "ippicvmt",
+            "ipp_iw"
         ]
         libs_linux = [
             # GTK Stuff >>
