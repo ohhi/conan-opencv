@@ -3,7 +3,7 @@ import os
 
 class MyTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    requires = "OpenCV/3.3.0-rc-1@ohhi/stable"
+    requires = "OpenCV/3.3.0-1@ohhi/stable"
     generators = "cmake", "txt"
 
     def imports(self):
