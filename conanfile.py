@@ -5,7 +5,7 @@ class OpenCVConan(ConanFile):
     # Description must be very short for conan.io
     description = "OpenCV: Open Source Computer Vision Library."
     name = "OpenCV"
-    version = "3.3.0-1"
+    version = "3.3.0-2"
     opencv_version_suffix = "330"
     settings = "os", "compiler", "build_type", "arch"
     requires = "libjpeg-turbo/1.5.1@lasote/stable"
@@ -22,6 +22,8 @@ class OpenCVConan(ConanFile):
     def source(self):
         self.run("git clone https://github.com/opencv/opencv.git")
         self.run("cd opencv && git checkout tags/3.3.0")
+        self.run("git clone https://github.com/opencv/opencv_contrib.git")
+        self.run("cd opencv_contrib && git checkout tags/3.3.0")
 
     def imports(self):
         self.copy("*", dst="jpeg-turbo", src="")
@@ -76,7 +78,8 @@ class OpenCVConan(ConanFile):
             "BUILD_opencv_videoio": True,
             "BUILD_opencv_videostab": True,
             "BUILD_opencv_java": False,
-            "BUILD_opencv_python3": False
+            "BUILD_opencv_python3": False,
+            "OPENCV_EXTRA_MODULES_PATH": "opencv_contrib/modules"
         }
 
         if self.settings.compiler == "Visual Studio":
