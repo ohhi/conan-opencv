@@ -5,7 +5,7 @@ class OpenCVConan(ConanFile):
     # Description must be very short for conan.io
     description = "OpenCV: Open Source Computer Vision Library."
     name = "OpenCV"
-    version = "3.3.0-2"
+    version = "3.3.0-3"
     opencv_version_suffix = "330"
     settings = "os", "compiler", "build_type", "arch"
     requires = "libjpeg-turbo/1.5.1@lasote/stable"
@@ -31,13 +31,15 @@ class OpenCVConan(ConanFile):
     def build(self):
         cmake = CMake(self)
         cmake_options = {
+            "BUILD_WITH_DEBUG_INFO": False,
+            "CMAKE_CONFIGURATION_TYPES": self.settings.build_type,
             "CMAKE_INSTALL_PREFIX": "install",
             "WITH_OPENXL": False,
             "WITH_IPP": True,
             "WITH_QT": False,
             "WITH_GTK": self.options.host_gtk,
             "WITH_OPENGL": False,
-            "WITH_CUDA": False,
+            "WITH_CUDA": True,
             "WITH_JPEG": True,
             "JPEG_INCLUDE_DIR": self.deps_cpp_info.includedirs[0],
             "JPEG_LIBRARY": "to be inserted bellow",
@@ -79,6 +81,18 @@ class OpenCVConan(ConanFile):
             "BUILD_opencv_videostab": True,
             "BUILD_opencv_java": False,
             "BUILD_opencv_python3": False,
+            "BUILD_opencv_cudaarithm": True,
+            "BUILD_opencv_cudacodec": True,
+            "BUILD_opencv_cudafilters": True,
+            "BUILD_opencv_cudaimgproc": True,
+            "BUILD_opencv_cudabgsegm": False,
+            "BUILD_opencv_cudafeatures2d": False,
+            "BUILD_opencv_cudalegacy": False,
+            "BUILD_opencv_cudaobjdetect": False,
+            "BUILD_opencv_cudaoptflow": False,
+            "BUILD_opencv_cudastereo": False,
+            "BUILD_opencv_cudawarping": True,
+            "BUILD_opencv_cudaev": True,
             "OPENCV_EXTRA_MODULES_PATH": "opencv_contrib/modules"
         }
 
@@ -105,6 +119,29 @@ class OpenCVConan(ConanFile):
             self.copy(pattern="*.pdb", dst="lib", src="install", keep_path=False)
             self.copy(pattern="*.dll", dst="bin", src="bin", keep_path=False)
             self.copy(pattern="*.exe", dst="bin", src="bin", keep_path=False)
+            # Cuda
+            self.copy(pattern="nvcuvid.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64", keep_path=False)
+            self.copy(pattern="npps.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64", keep_path=False)
+            self.copy(pattern="nppi.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64", keep_path=False)
+            self.copy(pattern="nppc.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64", keep_path=False)
+            self.copy(pattern="cublas.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64", keep_path=False)
+            self.copy(pattern="cufft.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64", keep_path=False)
+            self.copy(pattern="curand.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64", keep_path=False)
+            self.copy(pattern="cusparse.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64", keep_path=False)
+            self.copy(pattern="cuda.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64", keep_path=False)
+            self.copy(pattern="cudart.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64", keep_path=False)
+            self.copy(pattern="cupti.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/extras/CUPTI/libx64", keep_path=False)
+            self.copy(pattern="nvcuvid64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin", keep_path=False)
+            self.copy(pattern="npps64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin", keep_path=False)
+            self.copy(pattern="nppi64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin", keep_path=False)
+            self.copy(pattern="nppc64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin", keep_path=False)
+            self.copy(pattern="cublas64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin", keep_path=False)
+            self.copy(pattern="cufft64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin", keep_path=False)
+            self.copy(pattern="curand64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin", keep_path=False)
+            self.copy(pattern="cusparse64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin", keep_path=False)
+            self.copy(pattern="cuda64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin", keep_path=False)
+            self.copy(pattern="cudart64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/bin", keep_path=False)
+            self.copy(pattern="cupti64_80.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/extras/CUPTI/libx64", keep_path=False)
 
         if self.settings.os == "Linux":
             self.copy(pattern="*.a", dst="lib", src="3rdparty/lib", keep_path=False)
@@ -115,6 +152,41 @@ class OpenCVConan(ConanFile):
 
     def package_info(self):
         libs_opencv = [
+            # OpenCV contrib
+            "opencv_aruco",
+            "opencv_bgsegm",
+            "opencv_bioinspired",
+            "opencv_ccalib",
+            "opencv_datasets",
+            "opencv_dpm",
+            "opencv_face",
+            "opencv_fuzzy",
+            "opencv_hdf",
+            "opencv_img_hash",
+            "opencv_line_descriptor",
+            "opencv_optflow",
+            "opencv_phase_unwrapping",
+            "opencv_plot",
+            "opencv_reg",
+            "opencv_rgbd",
+            "opencv_saliency",
+            "opencv_stereo",
+            "opencv_structured_light",
+            "opencv_surface_matching",
+            "opencv_text",
+            "opencv_tracking",
+            "opencv_xfeatures2d",
+            "opencv_ximgproc",
+            "opencv_xobjdetect",
+            "opencv_xphoto",
+            # OpenCV Cuda
+            "opencv_cudaarithm",
+            "opencv_cudacodec",
+            "opencv_cudafilters",
+            "opencv_cudaimgproc",
+            "opencv_cudawarping",
+            "opencv_cudev",
+            # OpenCV
             "opencv_calib3d",
             "opencv_dnn",
             "opencv_features2d",
@@ -134,6 +206,17 @@ class OpenCVConan(ConanFile):
             "opencv_core" # GCC wants this last
         ]
         libs_3rdparty = [
+            "cudart",
+            "cupti",
+            "nvcuvid",
+            "npps",
+            "nppi",
+            "nppc",
+            "cublas",
+            "cufft",
+            "curand",
+            "cusparse",
+            "cuda",
             "ittnotify",
             "libprotobuf",
             "libpng",
