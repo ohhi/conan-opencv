@@ -3,7 +3,7 @@ import os
 
 class MyTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    requires = "OpenCV/3.3.0-3@ohhi/stable"
+    requires = "OpenCV/3.3.0-4@ohhi/stable"
     generators = "cmake", "txt"
 
     def imports(self):
@@ -11,7 +11,7 @@ class MyTestConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(source_dir=self.conanfile_directory, build_dir=".")
+        cmake.configure()
         cmake.build(build_dir=".")
     def test(self):
         self.run(os.path.join(".","bin", "mytest"))
