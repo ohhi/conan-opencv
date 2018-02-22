@@ -171,7 +171,7 @@ class OpenCVConan(ConanFile):
             "opencv_dpm",
             "opencv_face",
             "opencv_fuzzy",
-            "opencv_hdf",
+            #"opencv_hdf",
             "opencv_img_hash",
             "opencv_line_descriptor",
             "opencv_optflow",
@@ -251,7 +251,7 @@ class OpenCVConan(ConanFile):
             "freetype"
         ],
         libs_linux = [
-            "ipp_iw",
+            "ippiw",
             "ippicv",
             "pthread",
             "dl" # GCC wants this last
