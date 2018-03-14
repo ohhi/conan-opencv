@@ -124,7 +124,14 @@ class OpenCVConan(ConanFile):
             if self.options.host_cuda:
                 self.copy(pattern="nvcuvid.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
                 self.copy(pattern="npps.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
-                self.copy(pattern="nppi.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
+                self.copy(pattern="nppial.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
+                self.copy(pattern="nppicc.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
+                self.copy(pattern="nppidei.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
+                self.copy(pattern="nppif.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
+                self.copy(pattern="nppig.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
+                self.copy(pattern="nppim.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
+                self.copy(pattern="nppist.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
+                self.copy(pattern="nppitc.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
                 self.copy(pattern="nppc.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
                 self.copy(pattern="cublas.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
                 self.copy(pattern="cufft.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/lib/x64", keep_path=False)
@@ -135,7 +142,14 @@ class OpenCVConan(ConanFile):
                 self.copy(pattern="cupti.lib", dst="lib", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/extras/CUPTI/libx64", keep_path=False)
                 self.copy(pattern="nvcuvid64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
                 self.copy(pattern="npps64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
-                self.copy(pattern="nppi64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
+                self.copy(pattern="nppial64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
+                self.copy(pattern="nppicc64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
+                self.copy(pattern="nppidei64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
+                self.copy(pattern="nppif64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
+                self.copy(pattern="nppig64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
+                self.copy(pattern="nppim64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
+                self.copy(pattern="nppist64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
+                self.copy(pattern="nppitc64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
                 self.copy(pattern="nppc64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
                 self.copy(pattern="cublas64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
                 self.copy(pattern="cufft64_91.dll", dst="bin", src="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v9.1/bin", keep_path=False)
@@ -171,7 +185,7 @@ class OpenCVConan(ConanFile):
             "opencv_dpm",
             "opencv_face",
             "opencv_fuzzy",
-            #"opencv_hdf",
+            "opencv_hdf",
             "opencv_img_hash",
             "opencv_line_descriptor",
             "opencv_optflow",
@@ -223,7 +237,14 @@ class OpenCVConan(ConanFile):
             "cupti",
             "nvcuvid",
             "npps",
-            #"nppi",
+            "nppial",
+            "nppicc",
+            "nppidei",
+            "nppif",
+            "nppig",
+            "nppim",
+            "nppist",
+            "nppitc",
             "nppc",
             "cublas",
             "cufft",
@@ -251,7 +272,7 @@ class OpenCVConan(ConanFile):
             "freetype"
         ],
         libs_linux = [
-            "ippiw",
+            "ipp_iw",
             "ippicv",
             "pthread",
             "dl" # GCC wants this last
