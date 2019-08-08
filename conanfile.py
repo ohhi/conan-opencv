@@ -5,7 +5,7 @@ class OpenCVConan(ConanFile):
     # Description must be very short for conan.io
     description = "OpenCV: Open Source Computer Vision Library."
     name = "OpenCV"
-    version = "3.4.6-0"
+    version = "3.4.6-1"
     opencv_version_suffix = "346"
     settings = "os", "compiler", "build_type", "arch"
     requires = "libjpeg-turbo/1.5.2@jilab/stable"
@@ -185,7 +185,7 @@ class OpenCVConan(ConanFile):
             "opencv_dpm",
             "opencv_face",
             "opencv_fuzzy",
-            "opencv_hdf",
+            #"opencv_hdf",
             "opencv_img_hash",
             "opencv_line_descriptor",
             "opencv_optflow",
@@ -272,7 +272,7 @@ class OpenCVConan(ConanFile):
             "freetype"
         ],
         libs_linux = [
-            "ipp_iw",
+            "ippiw",
             "ippicv",
             "pthread",
             "dl" # GCC wants this last
