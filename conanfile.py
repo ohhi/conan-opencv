@@ -8,7 +8,7 @@ class OpenCVConan(ConanFile):
     version = "3.4.6-1"
     opencv_version_suffix = "346"
     settings = "os", "compiler", "build_type", "arch"
-    requires = "libjpeg-turbo/1.5.2@jilab/stable"
+    requires = "libjpeg-turbo/2.1.2"
     options = {
         "shared": [True, False],
         "host_gtk": [True, False],
