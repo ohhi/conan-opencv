@@ -18,7 +18,7 @@ if __name__ == "__main__":
         system('conan test_package -s compiler="Visual Studio" -s compiler.runtime=MDd -s build_type=Debug -o OpenCV:shared=False %s' % params)
         system('conan test_package -s compiler="Visual Studio" -s compiler.runtime=MDd -s build_type=Debug -o OpenCV:shared=True %s' % params)
     else:
-        system('conan test_package -s build_type=Release -o OpenCV:shared=False %s' % params)
-        system('conan test_package -s build_type=Debug -o OpenCV:shared=False %s' % params)
-        system('conan test_package -s build_type=Release -o OpenCV:shared=True %s' % params)
-        system('conan test_package -s build_type=Debug -o OpenCV:shared=True %s' % params)
+        system('conan create . jilab/stable -s build_type=Release -o OpenCV:shared=False %s' % params)
+        system('conan create . jilab/stable -s build_type=Debug -o OpenCV:shared=False %s' % params)
+        system('conan create . jilab/stable -s build_type=Release -o OpenCV:shared=True %s' % params)
+        system('conan create . jilab/stable -s build_type=Debug -o OpenCV:shared=True %s' % params)
